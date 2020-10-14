@@ -1,61 +1,107 @@
 package com.tecmilenio;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Collections;
+import java.util.Map;
+
+
+//En este metodo se creo el objeto Deck que es el mazo con todas las cartas
 
 public class Deck {
 
-    private Card cartas[];
-    private int posSiguienteCarta;
+    //Inicializar las variables
 
-    public void mazo() {
+    private HashMap<String,String> palos = new HashMap <String, String>();
+    private ArrayList <Card> baraja = new ArrayList<Card>();
+    private String strFormat = "Quedan %s";
 
-        int Numcartas = 52;
+    //llamar clase card
 
-        this.cartas = new Card[Numcartas];
-        this.posSiguienteCarta = 0;
-
-
+    public ArrayList<Card> getBaraja(){
+        return baraja;
     }
 
+    //Definir los palos con su color fijo
 
-    private void crearBaraja(){
+    public void mazo(){
+        palos.put("Diamante", "Rojo");
+        palos.put("Trebol","Negro");
+        palos.put("Pica","Negro");
+        palos.put("Corazon","Rojo");
+    }
 
-        String[] palos=Card.PALOS;
+    //Creamos la baraja con todos los tipos de carta sin repetirse
 
-        for(int i=0; i<palos.length; i++){
+    public void crearBaraja(){
+        mazo();
+        for(Map.Entry<String,String> palo:palos.entrySet()){
+            var paloCard = palo.getKey();
+            var color = palo.getValue();
 
-            for(int j=0; j<Card.LimiteCarta; j++){
-
-                    cartas[(i * (Card.LimiteCarta) + j)] = new Card(j + 1, palos[i]);
+            for(int i=1; i <= 13; i++){
+                    Card card = new Card(paloCard, color);
+                    card.setValor(i);
+                    baraja.add(card);
             }
         }
 
 
     }
 
+    //Dar orden aleatorio a las cartas
 
-
-
-
-
-
-
-
-
-        /*Card ca = new Card();
-        ca.carta();
-
-        ArrayList<Object> mazo = new ArrayList<>();
-
-        for (int c = 0; c <= 52; c++) {
-            mazo.add(c);
-        }
-        //System.out.println("original" + mazo);
-
-        List<Object> shuffleMe =new ArrayList<Object>(mazo);
-        Collections.shuffle(shuffleMe);
-        Set<Object> shuffledSet = new LinkedHashSet<Object>();
-        shuffledSet.addAll(shuffleMe);
-        //System.out.println("revuelto" + shuffledSet);*/
-
+    public void descomponer() {
+        Collections.shuffle(baraja);
+        System.out.println("se mezclo el Deck");
     }
+
+    //Mostrar la primera carta
+
+    public void head(){
+        var card = baraja.get(baraja.size()-1);
+        baraja.remove(card);
+        System.out.println(card.toString());
+        System.out.println(String.format(strFormat,baraja.size()));
+    }
+
+    //Sacar una carta random
+
+    private Card randomCard(){
+        var rnd = (int)Math.floor(Math.random()*(1-baraja.size()+1)+baraja.size());
+        return baraja.get(rnd);
+    }
+
+
+    public void pick(){
+        var card = randomCard();
+        baraja.remove(card);
+        System.out.println(card.toString());
+        System.out.println(String.format(strFormat,baraja.size()));
+    }
+
+    private void printHand(ArrayList<Card> cards){
+        for (var card: cards) System.out.println(card.toString());
+    }
+
+    //Mostrar la mano de 5 cartas y eliminarlas del mazo
+
+    public void hand(){
+        if(baraja.size() <= 5){
+            for (var card:baraja){
+                printHand(baraja);
+            }
+        }else{
+            var cards = new ArrayList<Card>();
+            Card card;
+            for (int i=1; i<=5;i++){
+                card = randomCard();
+                baraja.remove(card);
+                cards.add(card);
+            }
+            printHand(cards);
+            System.out.println(String.format(strFormat,baraja.size()));
+        }
+    }
+
+}
