@@ -1,9 +1,6 @@
 package com.tecmilenio;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Collections;
-import java.util.Map;
+import java.util.*;
 
 
 //En este metodo se creo el objeto Deck que es el mazo con todas las cartas
