@@ -48,6 +48,11 @@ public class Main {
 
 				case 0:
 					System.out.println("Gracias. Adios");
+					break;
+
+				default:
+					System.out.println("Opcion invalida");
+					break;
 
 			}
 		} while (option != 0);
