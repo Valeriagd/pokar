@@ -5,13 +5,14 @@ import java.util.*;
 
 //En este metodo se creo el objeto Deck que es el mazo con todas las cartas
 
-public class Deck {
+public class Deck{
 
     //Inicializar las variables
 
     private HashMap<String,String> palos = new HashMap <String, String>();
     private ArrayList <Card> baraja = new ArrayList<Card>();
     private String strFormat = "Quedan %s";
+    int a;
 
     //llamar clase card
 
@@ -32,6 +33,7 @@ public class Deck {
 
     public void crearBaraja(){
         mazo();
+
         for(Map.Entry<String,String> palo:palos.entrySet()){
             var paloCard = palo.getKey();
             var color = palo.getValue();
@@ -55,26 +57,36 @@ public class Deck {
 
     //Mostrar la primera carta
 
-    public void head(){
+    public void head () throws Exception{
         var card = baraja.get(baraja.size()-1);
         baraja.remove(card);
         System.out.println(card.toString());
         System.out.println(String.format(strFormat,baraja.size()));
+        a= baraja.size();
+
+        if (a == 0) {
+            throw new Exception("Se acabaron las cartas");
+        }
     }
 
     //Sacar una carta random
 
     private Card randomCard(){
-        var rnd = (int)Math.floor(Math.random()*(1-baraja.size()+1)+baraja.size());
+        var max = baraja.size()-1;
+        var rnd = (int)Math.floor(Math.random()*(0-max + 1)+max);
         return baraja.get(rnd);
     }
 
 
-    public void pick(){
+    public void pick () throws Exception{
         var card = randomCard();
         baraja.remove(card);
         System.out.println(card.toString());
         System.out.println(String.format(strFormat,baraja.size()));
+        a = baraja.size();
+        if (a == 0) {
+            throw new Exception("Se acabaron las cartas");
+        }
     }
 
     private void printHand(ArrayList<Card> cards){
@@ -83,11 +95,16 @@ public class Deck {
 
     //Mostrar la mano de 5 cartas y eliminarlas del mazo
 
-    public void hand(){
+    public void hand() throws Exception{
         if(baraja.size() <= 5){
-            for (var card:baraja){
+            for (var card:baraja) {
                 printHand(baraja);
+                a = baraja.size();
+                if (a <= 5) {
+                    throw new Exception("Se acabaron las cartas");
+                }
             }
+
         }else{
             var cards = new ArrayList<Card>();
             Card card;
@@ -95,10 +112,13 @@ public class Deck {
                 card = randomCard();
                 baraja.remove(card);
                 cards.add(card);
+
             }
             printHand(cards);
             System.out.println(String.format(strFormat,baraja.size()));
+
         }
+
     }
 
 }
